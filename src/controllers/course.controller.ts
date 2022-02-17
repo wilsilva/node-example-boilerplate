@@ -1,13 +1,15 @@
-import { Inject, Service } from "typedi";
+import { Response } from "express";
+import { inject } from "inversify";
+import { controller, httpGet, response } from "inversify-express-utils";
 
-import Course from "../entities/course.entity";
 import CourseService from "../services/course.service";
 
-@Service()
+@controller("/courses")
 export default class CourseController {
-  constructor(@Inject() private service: CourseService) {}
+  constructor(@inject("course.service") private service: CourseService) {}
 
-  getAll(): Array<Course> {
-    return this.service.retrieveAll();
+  @httpGet("/")
+  getAll(@response() response: Response): Response {
+    return response.json(this.service.retrieveAll());
   }
 }

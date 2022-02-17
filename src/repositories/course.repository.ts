@@ -1,9 +1,9 @@
-import { Service } from "typedi";
+import { injectable } from "inversify";
 
 import Course from "../entities/course.entity";
 import IRepository from "./repository";
 
-@Service("course.repository")
+@injectable()
 export default class CourseRepository implements IRepository<Course> {
   private static courses: Array<Course> = [];
 

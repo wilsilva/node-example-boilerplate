@@ -1,12 +1,12 @@
-import { Inject, Service } from "typedi";
+import { inject, injectable } from "inversify";
 
 import Course from "../entities/course.entity";
 import IRepository from "../repositories/repository";
 
-@Service()
+@injectable()
 export default class CourseService {
   constructor(
-    @Inject("course.repository") private repository: IRepository<Course>
+    @inject("course.repository") private repository: IRepository<Course>
   ) {}
 
   retrieveAll(): Array<Course> {

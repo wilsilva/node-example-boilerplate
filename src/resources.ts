@@ -1,5 +1,25 @@
+import { Container } from "inversify";
+
+import Course from "./entities/course.entity";
+import CourseRepository from "./repositories/course.repository";
+import IRepository from "./repositories/repository";
+import CourseService from "./services/course.service";
+
 /**
- * @description We need to import here class that will encapsulate by dependency injector;
- * For example, codes that are outside of domain.
+ * @controllers
  */
-import "./repositories/course.repository";
+import "./controllers/course.controller";
+
+const container = new Container();
+
+/**
+ * @Repositories
+ */
+container.bind<IRepository<Course>>("course.repository").to(CourseRepository);
+
+/**
+ * @Services
+ */
+container.bind<CourseService>("course.service").to(CourseService);
+
+export default container;
