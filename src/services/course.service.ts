@@ -12,4 +12,19 @@ export default class CourseService {
   retrieveAll(): Array<Course> {
     return this.repository.findAll();
   }
+
+  create(course: Course): Course {
+    const hasCourseWithSameId = (course: Course): boolean => {
+      if (this.retrieveAll().find((c) => course.id === c.id)) {
+        return true;
+      }
+
+      return false;
+    };
+
+    if (hasCourseWithSameId(course)) {
+      throw Error("Has a course with the same id");
+    }
+    return this.repository.create(course);
+  }
 }
