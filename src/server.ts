@@ -1,4 +1,6 @@
 import "reflect-metadata";
+import "./resources";
+
 import express from "express";
 
 import routes from "./routes";

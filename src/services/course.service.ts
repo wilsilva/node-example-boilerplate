@@ -1,16 +1,15 @@
-import { Service } from "typedi";
+import { Inject, Service } from "typedi";
 
 import Course from "../entities/course.entity";
+import IRepository from "../repositories/repository";
 
 @Service()
 export default class CourseService {
+  constructor(
+    @Inject("course.repository") private repository: IRepository<Course>
+  ) {}
+
   retrieveAll(): Array<Course> {
-    return [
-      new Course(
-        "Aprendendo NodeJS com Typescript e TypeDI",
-        "Neste curso usamos typescript e typeDI para criar uma solução em NodeJS",
-        4
-      ),
-    ];
+    return this.repository.findAll();
   }
 }
