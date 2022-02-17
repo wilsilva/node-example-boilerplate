@@ -15,11 +15,12 @@ server.setConfig((app) => {
 server.setErrorConfig((app) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: Error, _req: Request, res: Response, _next: unknown) => {
-    console.error(err.stack);
+    if (process.env.NODE_ENV === "dev") {
+      console.error(err.stack);
+    }
+
     res.status(400).json({ error: err.message });
   });
 });
 
-const app = server.build();
-
-app.listen(3000, () => console.log("Server running on port 3000"));
+export const app = server.build();
