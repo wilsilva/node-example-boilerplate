@@ -1,14 +1,14 @@
 import { Container } from "inversify";
 
-import Course from "./entities/course.entity";
-import CourseRepository from "./repositories/course.repository";
-import IRepository from "./repositories/repository";
-import CourseService from "./services/course.service";
+import Course from "./core/entities/course.entity";
+import CourseService from "./core/services/course.service";
+import CourseRepository from "./infra/database/repositories/course.repository";
+import IRepository from "./infra/database/repositories/repository";
 
 /**
  * @controllers
  */
-import "./controllers/course.controller";
+import "./application/http/controllers/course.controller";
 
 const container = new Container();
 

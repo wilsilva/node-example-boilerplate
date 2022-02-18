@@ -10,8 +10,8 @@ import {
   response,
 } from "inversify-express-utils";
 
-import Course from "../entities/course.entity";
-import CourseService from "../services/course.service";
+import Course from "../../../core/entities/course.entity";
+import CourseService from "../../../core/services/course.service";
 
 @controller("/courses")
 export default class CourseController {

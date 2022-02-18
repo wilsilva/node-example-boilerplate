@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 
-import Course from "../entities/course.entity";
+import Course from "../../../core/entities/course.entity";
 import IRepository from "./repository";
 
 @injectable()

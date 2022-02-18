@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 
+import IRepository from "../../infra/database/repositories/repository";
 import Course from "../entities/course.entity";
-import IRepository from "../repositories/repository";
 
 @injectable()
 export default class CourseService {
