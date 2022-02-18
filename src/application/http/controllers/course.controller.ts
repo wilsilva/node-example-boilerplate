@@ -12,10 +12,11 @@ import {
 
 import Course from "../../../core/entities/course.entity";
 import CourseService from "../../../core/services/course.service";
+import { SERVICE_TYPES } from "../../../resources/types";
 
 @controller("/courses")
 export default class CourseController {
-  constructor(@inject("course.service") private service: CourseService) {}
+  constructor(@inject(SERVICE_TYPES.Course) private service: CourseService) {}
 
   @httpGet("/")
   getAll(@response() response: Response<Course[]>): Response {

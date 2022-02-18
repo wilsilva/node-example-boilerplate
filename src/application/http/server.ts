@@ -3,7 +3,7 @@ import * as bodyParser from "body-parser";
 import { Request, Response } from "express";
 import { InversifyExpressServer } from "inversify-express-utils";
 
-import container from "../../resources";
+import container from "../../resources/container";
 
 const server = new InversifyExpressServer(container);
 
