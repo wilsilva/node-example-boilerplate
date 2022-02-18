@@ -19,7 +19,12 @@ server.setErrorConfig((app) => {
       console.error(err.stack);
     }
 
-    res.status(400).json({ error: err.message });
+    switch (err.name) {
+      case "not-found":
+        return res.status(404).json({ error: err.message });
+      default:
+        return res.status(400).json({ error: err.message });
+    }
   });
 });
 

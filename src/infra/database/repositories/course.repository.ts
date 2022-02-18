@@ -18,9 +18,9 @@ export default class CourseRepository implements IRepository<Course> {
     return CourseRepository.courses;
   }
 
-  update(entity: Course): Course {
+  update(id: string, entity: Course): Course {
     CourseRepository.courses = CourseRepository.courses.map((course) => {
-      if (course.id === entity.id) {
+      if (course.id === id) {
         return entity;
       }
       return course;
@@ -38,7 +38,7 @@ export default class CourseRepository implements IRepository<Course> {
 
     const newSize = CourseRepository.courses.length;
 
-    if (oldSize < newSize) {
+    if (newSize < oldSize) {
       return true;
     }
 

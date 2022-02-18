@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 import IRepository from "../../infra/database/repositories/repository";
 import { REPOSITORY_TYPES } from "../../resources/types";
 import Course from "../entities/course.entity";
+import NotFoundError from "../errors/notfound.error";
 
 @injectable()
 export default class CourseService {
@@ -16,11 +17,29 @@ export default class CourseService {
 
   create(course: Course): Course {
     const hasCourseWithSameId = (course: Course): boolean =>
-      !!this.retrieveAll().find((c) => course.id === c.id);
+      !!this.repository.findById(course.id);
 
     if (hasCourseWithSameId(course)) {
       throw Error("Has a course with the same id");
     }
     return this.repository.create(course);
+  }
+
+  retrieveById(id: string): Course {
+    const course = this.repository.findById(id);
+
+    if (!course) {
+      throw new NotFoundError("course not found.");
+    }
+
+    return course;
+  }
+
+  update(id: string, course: Course): Course {
+    return this.repository.update(id, course);
+  }
+
+  remove(id: string): boolean {
+    return this.repository.delete(this.retrieveById(id));
   }
 }

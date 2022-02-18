@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import { inject } from "inversify";
 import {
   controller,
+  httpDelete,
   httpGet,
   httpPost,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   request,
+  requestParam,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   response,
 } from "inversify-express-utils";
@@ -29,6 +31,23 @@ export default class CourseController {
     @response() response: Response<Course>
   ): Response {
     const course = request.body as Course;
-    return response.json(this.service.create(course));
+    return response.status(201).json(this.service.create(course));
+  }
+
+  @httpGet("/:id")
+  getById(
+    @requestParam("id") id: string,
+    @response() response: Response<Course>
+  ): Response {
+    return response.json(this.service.retrieveById(id));
+  }
+
+  @httpDelete("/:id")
+  removeById(
+    @requestParam("id") id: string,
+    @response() response: Response
+  ): Response {
+    const deleted = this.service.remove(id);
+    return response.json({ deleted });
   }
 }
