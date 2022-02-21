@@ -1,3 +1,9 @@
-import { app } from "./server";
+import server from "./server";
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+const app = server.build();
+
+app.listen(3000, () => {
+  if (process.env.NODE_ENV !== "prod") {
+    console.log("Server running on port 3000");
+  }
+});

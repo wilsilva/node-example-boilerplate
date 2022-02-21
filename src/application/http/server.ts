@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import * as bodyParser from "body-parser";
-import { Request, Response } from "express";
 import { InversifyExpressServer } from "inversify-express-utils";
 
 import container from "../../resources/container";
+import { errorHandling } from "./middleware/error-handling.middleware";
 
 const server = new InversifyExpressServer(container);
 
@@ -12,20 +12,6 @@ server.setConfig((app) => {
   app.use(bodyParser.json());
 });
 
-server.setErrorConfig((app) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  app.use((err: Error, _req: Request, res: Response, _next: unknown) => {
-    if (process.env.NODE_ENV === "dev") {
-      console.error(err.stack);
-    }
+server.setErrorConfig((app) => app.use(errorHandling));
 
-    switch (err.name) {
-      case "not-found":
-        return res.status(404).json({ error: err.message });
-      default:
-        return res.status(400).json({ error: err.message });
-    }
-  });
-});
-
-export const app = server.build();
+export default server;
