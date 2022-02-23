@@ -2,7 +2,7 @@
 import supertest from "supertest";
 
 import server from "../src/application/http/server";
-import Course from "../src/core/entities/course.entity";
+import Course from "../src/core/models/course.model";
 
 describe("POST /courses", () => {
   const app = server.build();

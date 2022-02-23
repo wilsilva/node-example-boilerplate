@@ -1,13 +1,25 @@
 import { injectable } from "inversify";
 
-import Course from "../../../core/entities/course.entity";
-import IRepository from "./repository";
+import Course from "../../../core/models/course.model";
+import ICourseRepository from "../../../core/repositories/course.repository";
+import * as uuid from "../../utils/uuid";
+import InvalidUUID from "../errors/invalid-uuid.error";
 
 @injectable()
-export default class CourseRepository implements IRepository<Course> {
+export default class CourseRepository implements ICourseRepository {
   private static courses: Array<Course> = [];
 
   create(entity: Course): Course {
+    const course = entity;
+
+    if (!course.id) {
+      course.id = uuid.generate();
+    }
+
+    if (!uuid.isValid(course.id)) {
+      throw new InvalidUUID();
+    }
+
     CourseRepository.courses.push(entity);
     return entity;
   }
@@ -43,5 +55,9 @@ export default class CourseRepository implements IRepository<Course> {
     }
 
     return false;
+  }
+
+  findCoursesByCreatorId(creatorId: string): Course[] {
+    throw new Error("Method not implemented.");
   }
 }

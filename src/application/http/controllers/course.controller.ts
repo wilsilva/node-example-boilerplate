@@ -12,8 +12,9 @@ import {
   response,
 } from "inversify-express-utils";
 
-import Course from "../../../core/entities/course.entity";
+import Course from "../../../core/models/course.model";
 import CourseService from "../../../core/services/course.service";
+import * as uuid from "../../../infra/utils/uuid";
 import { SERVICE_TYPES } from "../../../resources/types";
 
 @controller("/courses")
@@ -28,9 +29,18 @@ export default class CourseController {
   @httpPost("/")
   create(
     @request() request: Request,
-    @response() response: Response<Course>
+    @response() response: Response
   ): Response {
     const course = request.body as Course;
+
+    if (!course.id) {
+      course.id = uuid.generate();
+    }
+
+    if (!uuid.isValid(course.id)) {
+      return response.status(400).json({ error: "Invalid UUID." });
+    }
+
     return response.status(201).json(this.service.create(course));
   }
 

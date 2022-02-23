@@ -1,14 +1,14 @@
 import { inject, injectable } from "inversify";
 
-import IRepository from "../../infra/database/repositories/repository";
 import { REPOSITORY_TYPES } from "../../resources/types";
-import Course from "../entities/course.entity";
 import NotFoundError from "../errors/notfound.error";
+import Course from "../models/course.model";
+import ICourseRepository from "../repositories/course.repository";
 
 @injectable()
 export default class CourseService {
   constructor(
-    @inject(REPOSITORY_TYPES.Course) private repository: IRepository<Course>
+    @inject(REPOSITORY_TYPES.Course) private repository: ICourseRepository
   ) {}
 
   retrieveAll(): Array<Course> {
