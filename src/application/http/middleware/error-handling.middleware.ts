@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 
+import IApplicationError from "../../../core/errors/application.error";
+
 export const errorHandling = (
   err: Error,
   _req: Request,
@@ -11,11 +13,15 @@ export const errorHandling = (
     console.error(err.stack);
   }
 
-  switch (err.name) {
-    case "not-found":
-      return res.status(404).json({ error: err.message });
-
-    default:
-      return res.status(400).json({ error: err.message });
+  if (Object.prototype.hasOwnProperty.call(err, "httpResponseStatusCode")) {
+    return res
+      .status((err as IApplicationError).httpResponseStatusCode)
+      .json({ error: { message: err.message } });
   }
+
+  if (err) {
+    return res.status(500).json({ error: { message: err.message } });
+  }
+
+  return res;
 };

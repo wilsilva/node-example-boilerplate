@@ -1,7 +1,8 @@
 import { inject, injectable } from "inversify";
 
 import { REPOSITORY_TYPES } from "../../resources/types";
-import NotFoundError from "../errors/notfound.error";
+import NotFoundError from "../errors/not-found.error";
+import ThereTheSameIDError from "../errors/there-same-id.error";
 import Course from "../models/course.model";
 import ICourseRepository from "../repositories/course.repository";
 
@@ -20,7 +21,7 @@ export default class CourseService {
       !!this.repository.findById(course.id);
 
     if (hasCourseWithSameId(course)) {
-      throw Error("Has a course with the same id");
+      throw new ThereTheSameIDError("There is an course with the same id");
     }
     return this.repository.create(course);
   }

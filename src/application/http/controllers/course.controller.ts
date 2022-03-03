@@ -12,6 +12,7 @@ import {
   response,
 } from "inversify-express-utils";
 
+import CourseDTO from "../../../core/dto/course.dto";
 import Course from "../../../core/models/course.model";
 import CourseService from "../../../core/services/course.service";
 import * as uuid from "../../../infra/utils/uuid";
@@ -31,7 +32,7 @@ export default class CourseController {
     @request() request: Request,
     @response() response: Response
   ): Response {
-    const course = request.body as Course;
+    const course = request.body as CourseDTO;
 
     if (!course.id) {
       course.id = uuid.generate();
@@ -41,7 +42,18 @@ export default class CourseController {
       return response.status(400).json({ error: "Invalid UUID." });
     }
 
-    return response.status(201).json(this.service.create(course));
+    return response
+      .status(201)
+      .json(
+        this.service.create(
+          new Course(
+            course.id,
+            course.name,
+            course.description,
+            course.duration
+          )
+        )
+      );
   }
 
   @httpGet("/:id")
